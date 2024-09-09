@@ -1,2 +1,3 @@
 # FlopFlagger
- The neatest little Roblox FastFlag manager for macOS!
+### The neatest little Roblox FastFlag manager for macOS!
+**!!! DO NOT USE FASTFLAGS WITH THE INTENT TO DESTROY OR GAIN AN UNFAIR ADVANTAGE. THE DEVELOPER NOR THIS SOFTWARE WILL NOT BE HELD LIABLE FOR YOUR AFFECTED ACCOUNT'S STANDING !!!**
