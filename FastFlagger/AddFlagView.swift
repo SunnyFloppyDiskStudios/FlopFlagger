@@ -33,7 +33,7 @@ func addFlagToFlags(_ flag: String, _ type: String, _ val: String) {
         
         trueValue = Double(val) ?? 0.0
     } else if type == "Bool" {
-        var lowerVal = val.lowercased()
+        let lowerVal = val.lowercased()
         trueValue = Bool(lowerVal) ?? false
     }
     

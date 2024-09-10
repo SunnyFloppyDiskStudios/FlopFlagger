@@ -16,8 +16,6 @@ struct ContentView: View {
     
     @State var search: String = ""
     
-    @State var isActiveToggleOn: Bool = false
-    
     //    func SearchInFlags() {
     //        if let flagsJ = flags as? [String: Any], let code = flags["code"] as? Int {
     //          print(code)
@@ -137,13 +135,27 @@ struct ContentView: View {
                         Button("Delete") {
                             print("delete \(flag)")
                         }.padding()
-                        Toggle(isOn: $isActiveToggleOn) {}.padding().onChange(of: isActiveToggleOn) {
+                        
+                        Button() {
+                            @State var isActiveToggleOn: Bool = false
+                            isActiveToggleOn = !isActiveToggleOn
+                            
                             if isActiveToggleOn {
-                                print("activate \(flag)")
+                                Text("􀆨")
+                            } else if !isActiveToggleOn {
+                                Text("􀆩")
                             } else {
-                                print("deactivate \(flag)")
+                                Text("􀥥")
                             }
-                        }
+                        }.padding()
+                        
+//                        Toggle(isOn: $isActiveToggleOn) {}.padding().onChange(of: isActiveToggleOn) {
+//                            if isActiveToggleOn {
+//                                print("activate \(flag)")
+//                            } else {
+//                                print("deactivate \(flag)")
+//                            }
+//                        }
                         Spacer()
                         Text(flag).padding()
                         Spacer()
