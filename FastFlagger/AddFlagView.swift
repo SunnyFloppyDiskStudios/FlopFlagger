@@ -42,6 +42,16 @@ func addFlagToFlags(_ flag: String, _ type: String, _ val: String) {
     print(flags)
 }
 
+func reloadContentView() {
+    @Environment(\.openWindow) var openWindow
+    @Environment(\.dismissWindow) var dismissWindow
+    
+    dismissWindow(id: "content")
+    openWindow(id: "content")
+    dismissWindow(id: "addflag")
+    openWindow(id: "addflag")
+}
+
 struct AddFlagView: View {
     @State var flagEntered: String = ""
     @State var valueEntered: String = ""
@@ -70,6 +80,7 @@ struct AddFlagView: View {
             
             Button("Insert Flag") {
                 addFlagToFlags(flagEntered, selection, valueEntered)
+                reloadContentView()
             }
         }
     }

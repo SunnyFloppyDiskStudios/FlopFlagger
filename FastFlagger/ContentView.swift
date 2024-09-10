@@ -11,9 +11,18 @@ import Foundation
 let workspace = NSWorkspace.shared
 let applications = workspace.runningApplications
 
+func reloadContentViewAfterDelete() {
+    @Environment(\.openWindow) var openWindow
+    @Environment(\.dismissWindow) var dismissWindow
+    
+    dismissWindow(id: "content")
+    openWindow(id: "content")
+}
+
 func deleteFlag(_ flag: String) {
     flags.removeValue(forKey: flag)
     print(flags)
+    reloadContentViewAfterDelete()
 }
 
 func flagStatusControl(_ flag: String) {
@@ -42,7 +51,6 @@ func flagStatusControl(_ flag: String) {
 func getFlagValue(_ flag: String) {
     print(flags[flag]!)
 }
-
 
 struct ContentView: View {
     @Environment(\.openWindow) var openWindow
@@ -81,7 +89,7 @@ struct ContentView: View {
                         
                         let robloxPlayer = NSURL(fileURLWithPath: "/Applications/Roblox.app", isDirectory: true) as URL
                         NSWorkspace.shared.open(robloxPlayer)
-                    }.padding()
+                    }.padding().buttonStyle(.borderedProminent).tint(.accentColor)
                 }
                 
                 Spacer()
@@ -124,9 +132,6 @@ struct ContentView: View {
             Spacer()
             
             HStack {
-                
-                Spacer()
-                
                 VStack {
                     Image(systemName: "trash.fill")
                         .imageScale(.large)
@@ -166,15 +171,14 @@ struct ContentView: View {
             VStack {
                 ForEach(Array(flags.keys), id: \.self) { flag in
                     HStack {
-                        Spacer()
-                        Button("Delete") {
+                        Button("􀈒") {
                             deleteFlag(flag)
-                        }.padding()
+                        }.padding().buttonStyle(.borderedProminent).tint(.red)
                         
                         Button("Status") {
                             flagStatusControl(flag)
                             getFlagValue(flag)
-                        }.padding().tint(.red)
+                        }.padding()
                         
                         Spacer()
                         Text(flag).padding()
