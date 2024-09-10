@@ -11,8 +11,43 @@ import Foundation
 let workspace = NSWorkspace.shared
 let applications = workspace.runningApplications
 
+func deleteFlag(_ flag: String) {
+    flags.removeValue(forKey: flag)
+    print(flags)
+}
+
+func flagStatusControl(_ flag: String) {
+    if activeFlags[flag] != nil {
+        activeFlags.removeValue(forKey: flag)
+        print(activeFlags)
+    } else {
+        print(activeFlags)
+        
+        if flags[flag].customMirror.subjectType == String.self {
+            activeFlags.updateValue(flags[flag] ?? "", forKey: flag)
+        } else if flags[flag].customMirror.subjectType == Bool.self {
+            activeFlags.updateValue(flags[flag] ?? false, forKey: flag)
+        } else if flags[flag].customMirror.subjectType == Int.self {
+            activeFlags.updateValue(flags[flag] ?? 0, forKey: flag)
+        } else if flags[flag].customMirror.subjectType == Double.self {
+            activeFlags.updateValue(flags[flag] ?? 0.0, forKey: flag)
+        } else {
+            activeFlags.updateValue(flags[flag] ?? "", forKey: flag)
+        }
+        print(activeFlags)
+    }
+    print("toggle \(flag)")
+}
+
+func getFlagValue(_ flag: String) {
+    print(flags[flag]!)
+}
+
+
 struct ContentView: View {
     @Environment(\.openWindow) var openWindow
+    
+    @State var isActiveToggleOn: Bool = false
     
     @State var search: String = ""
     
@@ -24,7 +59,7 @@ struct ContentView: View {
     //        let flagValue = flags.object(forKey: search)
     //        let flag
     //    }
-    //
+
     var body: some View {
         VStack {
             HStack {
@@ -127,39 +162,24 @@ struct ContentView: View {
                 
             }
             
-            // CONTENT
+            /// **CONTENT**
             VStack {
                 ForEach(Array(flags.keys), id: \.self) { flag in
                     HStack {
                         Spacer()
                         Button("Delete") {
-                            print("delete \(flag)")
+                            deleteFlag(flag)
                         }.padding()
                         
-                        Button() {
-                            @State var isActiveToggleOn: Bool = false
-                            isActiveToggleOn = !isActiveToggleOn
-                            
-                            if isActiveToggleOn {
-                                Text("􀆨")
-                            } else if !isActiveToggleOn {
-                                Text("􀆩")
-                            } else {
-                                Text("􀥥")
-                            }
-                        }.padding()
+                        Button("Status") {
+                            flagStatusControl(flag)
+                            getFlagValue(flag)
+                        }.padding().tint(.red)
                         
-//                        Toggle(isOn: $isActiveToggleOn) {}.padding().onChange(of: isActiveToggleOn) {
-//                            if isActiveToggleOn {
-//                                print("activate \(flag)")
-//                            } else {
-//                                print("deactivate \(flag)")
-//                            }
-//                        }
                         Spacer()
                         Text(flag).padding()
                         Spacer()
-                        Text(flag).padding()
+                        Text(flag).padding() // Flag Value
                         Spacer()
                     }
                 }
