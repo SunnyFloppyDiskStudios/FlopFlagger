@@ -26,6 +26,8 @@ func deleteFlag(_ flag: String) {
 }
 
 func flagStatusControl(_ flag: String) {
+    @State var colourToggle: Bool = false
+    
     if activeFlags[flag] != nil {
         activeFlags.removeValue(forKey: flag)
         print(activeFlags)
@@ -48,8 +50,10 @@ func flagStatusControl(_ flag: String) {
     print("toggle \(flag)")
 }
 
-func getFlagValue(_ flag: String) {
+func getFlagValue(_ flag: String) -> Any {
+    @State var flagValue: Any
     print(flags[flag]!)
+    return flags[flag]! as Any //
 }
 
 struct ContentView: View {
@@ -175,15 +179,15 @@ struct ContentView: View {
                             deleteFlag(flag)
                         }.padding().buttonStyle(.borderedProminent).tint(.red)
                         
-                        Button("Status") {
+                        Button("􀆨") {
                             flagStatusControl(flag)
-                            getFlagValue(flag)
-                        }.padding()
+                        }.padding().buttonStyle(.borderedProminent).tint(.red)
                         
                         Spacer()
                         Text(flag).padding()
                         Spacer()
-                        Text(flag).padding() // Flag Value
+                        
+                        Text("flags[flag]!").padding() // Flag Value
                         Spacer()
                     }
                 }
