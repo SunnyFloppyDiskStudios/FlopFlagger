@@ -25,6 +25,10 @@ struct FastFlaggerApp: App {
             SettingsView()
         }.defaultSize(width: 350, height: 150)
         
+        WindowGroup(id: "comingsoon") {
+            ComingSoonView()
+        }.defaultSize(width: 150, height: 150)
+        
         Settings {
             SettingsView()
         }
