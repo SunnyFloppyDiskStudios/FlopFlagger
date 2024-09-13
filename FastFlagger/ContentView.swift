@@ -121,15 +121,7 @@ func flagStatusControl(_ flag: String) {
         activeFlags.removeValue(forKey: flag)
     } else {
         if flags[flag].customMirror.subjectType == String.self {
-            activeFlags.updateValue(flags[flag] ?? "", forKey: flag)
-        } else if flags[flag].customMirror.subjectType == Bool.self {
-            activeFlags.updateValue(flags[flag] ?? false, forKey: flag)
-        } else if flags[flag].customMirror.subjectType == Int.self {
-            activeFlags.updateValue(flags[flag] ?? 0, forKey: flag)
-        } else if flags[flag].customMirror.subjectType == Double.self {
-            activeFlags.updateValue(flags[flag] ?? 0.0, forKey: flag)
-        } else {
-            activeFlags.updateValue(flags[flag] ?? "", forKey: flag)
+            activeFlags.updateValue(flags[flag] ?? "ERR_CORRUPT_VAL", forKey: flag)
         }
     }
 }
@@ -299,15 +291,16 @@ struct ContentView: View {
                         
                         Spacer()
                         
+                        Button("􀆨") {
+                            flagStatusControl(flag)
+                        }.padding().buttonStyle(.borderedProminent).tint(.blue)
+                        
+                        Spacer()
+                        
                         Button("􀈒") {
                             deleteFlag(flag)
                         }.padding().buttonStyle(.borderedProminent).tint(.red)
                         
-                        Spacer()
-                        
-                        Button("􀆨") {
-                            flagStatusControl(flag)
-                        }.padding().buttonStyle(.borderedProminent).tint(.red)
                     }
                 }
             }

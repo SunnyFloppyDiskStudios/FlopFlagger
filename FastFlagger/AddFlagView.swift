@@ -20,22 +20,7 @@ var activeFlags: [String: Any] = [
 ]
 
 func addFlagToFlags(_ flag: String, _ type: String, _ val: String) {
-    var trueValue: Any = val
-    
-    if type == "String" {
-        trueValue = String(val)
-    } else if type == "Number" {
-        if val.firstIndex(of: ".") != nil {
-            trueValue = Double(val) ?? 0.0
-        } else {
-            trueValue = Int(val) ?? 0
-        }
-        
-        trueValue = Double(val) ?? 0.0
-    } else if type == "Bool" {
-        let lowerVal = val.lowercased()
-        trueValue = Bool(lowerVal) ?? false
-    }
+    let trueValue: String = String(val)
     
     flags.updateValue(trueValue, forKey: flag)
     activeFlags.updateValue(trueValue, forKey: flag)
@@ -66,12 +51,6 @@ struct AddFlagView: View {
                     "Insert Flag",
                     text: $flagEntered
                 ).multilineTextAlignment(.center)
-                Picker("", selection: $selection) {
-                    ForEach(states, id: \.self) {
-                        Text($0)
-                    }
-                }
-                .pickerStyle(.menu)
             }
             TextField(
                 "Flag Value",
