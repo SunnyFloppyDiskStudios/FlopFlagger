@@ -14,31 +14,77 @@ import UniformTypeIdentifiers
 let workspace = NSWorkspace.shared
 let applications = workspace.runningApplications
 
-func saveJSON(_ jsonString: String) {
-    let savePanel = NSSavePanel() // erroring, fix
-    let bundleFile = Bundle.main.url(forResource: "MyCustom", withExtension: "zip")!
-
-    savePanel.directoryURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first!
-    
-    savePanel.message = "Save your FFlag JSON"
-    savePanel.nameFieldStringValue = "FlopFlaggerExport.json"
-    savePanel.showsHiddenFiles = false
-    savePanel.showsTagField = false
-    savePanel.canCreateDirectories = true
-    savePanel.allowsOtherFileTypes = false
-    savePanel.isExtensionHidden = true
-    
-    if let url = savePanel.url, savePanel.runModal().rawValue == NSApplication.ModalResponse.OK.rawValue {
-        print("Now copying", bundleFile.path, "to", url.path)
-        // Do the actual copy:
-        do {
-            try FileManager().copyItem(at: bundleFile, to: url)
-        } catch {
-            print(error.localizedDescription)
-        }
-    } else {
-        print("canceled")
+func convertJSONStringToJSONData(_ jsonString: String) -> Data? {
+    do {
+        let jsonEncoder = JSONEncoder()
+        jsonEncoder.outputFormatting = .withoutEscapingSlashes
+        
+        let dataJSON = try jsonEncoder.encode(jsonString)
+        
+        return dataJSON
+    } catch {
+        print(error.localizedDescription)
+        return nil
     }
+}
+
+func createFile(_ atPath: String, _ contents: Data?, _ urlAsURL: URL, _ attributes: [FileAttributeKey : Any]? = nil) -> Bool {
+    print(atPath)
+    print(contents ?? "no bytes found in contents")
+    print(attributes ?? "no attributes")
+    print(urlAsURL)
+    
+    let fullURL = urlAsURL.appendingPathComponent("flopflags.json")
+    print(fullURL)
+    
+    if FileManager().fileExists(atPath: urlAsURL.path) {
+        do {
+            let fileHandle = try FileHandle(forWritingTo: fullURL)
+            
+            fileHandle.seekToEndOfFile()
+            
+            do {
+                try fileHandle.write(contentsOf: contents!)
+            } catch {
+                print(error.localizedDescription)
+            }
+            
+        } catch {
+            do {
+                try contents!.write(to: fullURL)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    return true
+}
+
+func saveJSON(_ jsonData: Data) {
+    let dialog = NSOpenPanel();
+
+    dialog.title = "Save your FFlag";
+    dialog.showsResizeIndicator = false;
+    dialog.showsHiddenFiles = false;
+    dialog.allowsMultipleSelection = false;
+    dialog.canChooseFiles = false;
+    dialog.canChooseDirectories = true;
+    dialog.allowedContentTypes = [.json];
+
+
+    if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+        let result = dialog.url
+
+        if (result != nil) {
+            let path: String = (result?.path())!
+            
+            let success = createFile(path, jsonData, result!)
+            if success {
+                @Environment(\.openWindow) var openWindow
+                openWindow(id: "done")
+            }
+        }
+    } else {return}
 }
 
 func reloadContentViewAfterDelete() {
@@ -50,15 +96,14 @@ func reloadContentViewAfterDelete() {
 }
 
 func convertDictionaryToJSON(_ dictionary: [String: Any]) -> String? {
-    guard let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted) else {
+    guard let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: []) else {
         print("Something is wrong while converting dictionary to JSON data.")
         return nil
     }
-    guard let jsonString = String(data: jsonData, encoding: .utf8) else {
+    guard let jsonString = String(data: jsonData, encoding: String.Encoding.utf8) else {
         print("Something is wrong while converting JSON data to JSON string.")
         return nil
     }
-    
     return jsonString
 }
 
@@ -135,8 +180,9 @@ struct ContentView: View {
                     Button("Export JSON") {
                         let dictionary: [String: Any] = flags
                         let output = convertDictionaryToJSON(dictionary)
+                        let conData = convertJSONStringToJSONData(output!)
                         
-                        saveJSON(output!)
+                        saveJSON(conData!)
                         
                     }.padding()
                 }
