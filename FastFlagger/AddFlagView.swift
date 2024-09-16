@@ -11,14 +11,6 @@ import ExtensionKit
 
 let states = ["String", "Number", "Bool"]
 
-var flags: [String: Any] = [
-    :
-]
-
-var activeFlags: [String: Any] = [
-    :
-]
-
 func addFlagToFlags(_ flag: String, _ type: String, _ val: String) {
     let trueValue: String = String(val)
     

@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct SettingsView: View {    
+struct SettingsView: View {
+    
     var body: some View {
         VStack {
             Image(systemName: "person.fill")
@@ -16,7 +18,7 @@ struct SettingsView: View {
             Text("Created by SunnyFlops")
             Text("Not intended for commercial or destructive use")
             Button("Disable All Flags") {
-                
+                print("disable")
             }
             Button("Support") {
                 @Environment(\.openURL) var openURL
@@ -25,7 +27,11 @@ struct SettingsView: View {
                     openURL(url)
                 }
             }
+            Button("Preset Location") {
+                saveUserData() // change later -- test
+            }
         }.padding()
+        
     }
 }
 
