@@ -9,6 +9,11 @@ import SwiftUI
 import Foundation
 import SwiftData
 
+struct DataController {
+    @Environment(\.modelContext) static var modelContext
+}
+
+
 @Model class configSettingsSave {
     var configJSON: Data
     var flagsJSON: Data
