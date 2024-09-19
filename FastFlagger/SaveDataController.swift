@@ -7,24 +7,7 @@
 
 import SwiftUI
 import Foundation
-import SwiftData
-
-struct DataController {
-    @Environment(\.modelContext) static var modelContext
-}
-
-
-@Model class configSettingsSave {
-    var configJSON: Data
-    var flagsJSON: Data
-    var activeFlagsJSON: Data
-    
-    init(configJSON: Data, flagsJSON: Data, activeFlagsJSON: Data) {
-        self.configJSON = configJSON
-        self.flagsJSON = flagsJSON
-        self.activeFlagsJSON = activeFlagsJSON
-    }
-}
+import CoreData
 
 var UserConfig: [String:String] = [
     "PresetLocation" : "~/Desktop/Flags/",

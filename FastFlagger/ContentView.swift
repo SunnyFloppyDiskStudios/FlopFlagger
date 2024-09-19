@@ -305,10 +305,7 @@ struct ContentView: View {
                 }
             }
             Spacer()
-        }
-    }
-    func reList() {
-        
+        }.onAppear() { loadContent() }
     }
 }
 
