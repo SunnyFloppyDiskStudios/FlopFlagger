@@ -6,6 +6,7 @@
 //
 // Mac Roblox Client - https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer ; Mac..Player
 // Mac Roblox Studio - https://clientsettingscdn.roblox.com/v2/client-version/MacStudio ; Mac..Studio
+// /Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json needs to be created
 //
 
 import Foundation
