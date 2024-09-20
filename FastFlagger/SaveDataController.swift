@@ -33,7 +33,6 @@ func saveUserData() {
 }
 
 func loadUserData() {
-    print("LOADING DATA!")
     let fileManager = FileManager.default
     
     if fileManager.fileExists(atPath: flagsFileURL.path()) {

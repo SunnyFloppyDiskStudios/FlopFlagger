@@ -42,10 +42,6 @@ func loadContent() {
     let clientCVU: String = clientProcessed["clientVersionUpload"] ?? "ERR_NO_INTERNET"
     let studioCVU: String = studioProcessed["clientVersionUpload"] ?? "RESTART_APP"
     
-    print(clientCVU)
-    print(studioCVU)
-    
-    
     writeVersions(clientCVU, studioCVU)
     
 }
