@@ -207,14 +207,25 @@ struct ContentView: View {
                 }
                 
                 HStack {
+                    Image(systemName: "internaldrive.fill")
+                        .imageScale(.large)
+                        .foregroundStyle(.tint)
+                    Button("Save") {
+                        saveUserData()
+                    }.padding().buttonStyle(.borderedProminent).tint(.accentColor)
+                }
+                
+                HStack {
                     Image(systemName: "gamecontroller.fill")
                         .imageScale(.large)
                         .foregroundStyle(.tint)
-                    Button("Save, Apply, & Open Client") {
+                    Button("Apply, & Open Client") {
                         
                         let dictionary: [String: Any] = flags
                         let output = convertDictionaryToJSON(dictionary)
                         let conData = convertJSONStringToJSONData(output!)
+                        
+                        saveUserData()
                         
                         applyJSON(conData!)
                         
@@ -330,7 +341,10 @@ struct ContentView: View {
                 }
             }
             Spacer()
-        }.onAppear() { loadContent() }
+        }.onAppear() {
+            loadContent()
+            loadUserData()
+        }
     }
 }
 

@@ -15,7 +15,7 @@ struct FastFlaggerApp: App {
     var body: some Scene {
         WindowGroup(id: "content") {
             ContentView()
-        }.defaultSize(width: 1000, height: 750)
+        }.defaultSize(width: 1200, height: 650)
         
         WindowGroup(id: "addflag") {
             AddFlagView()

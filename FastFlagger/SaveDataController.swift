@@ -9,11 +9,6 @@ import SwiftUI
 import Foundation
 import CoreData
 
-var UserConfig: [String:String] = [
-    "PresetLocation" : "~/Desktop/Flags/",
-    
-]
-
 var flags: [String: String] = [
     :
 ]
@@ -22,10 +17,31 @@ var activeFlags: [String: String] = [
     :
 ]
 
+let saveDataLocation = URL.documentsDirectory
+
+let flagsFileURL = saveDataLocation.appendingPathComponent("Flags.json")
+let activeFlagsFileURL = saveDataLocation.appendingPathComponent("ActiveFlags.json")
+
+
+
 func saveUserData() {
-    let configJSON: Data = try! JSONEncoder().encode(UserConfig)
-    let flagsJSON: Data = try! JSONEncoder().encode(flags)
-    let activeFlagsJSON: Data = try! JSONEncoder().encode(activeFlags)
+    let flagsJSON = try! JSONEncoder().encode(flags)
+    let activeFlagsJSON = try! JSONEncoder().encode(activeFlags)
     
+    try? flagsJSON.write(to: flagsFileURL)
+    try? activeFlagsJSON.write(to: activeFlagsFileURL)
+}
+
+func loadUserData() {
+    print("LOADING DATA!")
+    let fileManager = FileManager.default
     
+    if fileManager.fileExists(atPath: flagsFileURL.path()) {
+        flags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: flagsFileURL))
+        print(flags)
+    }
+    
+    if fileManager.fileExists(atPath: activeFlagsFileURL.path()) {
+        activeFlags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: activeFlagsFileURL))
+    }
 }
