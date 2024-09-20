@@ -22,8 +22,6 @@ let saveDataLocation = URL.documentsDirectory
 let flagsFileURL = saveDataLocation.appendingPathComponent("Flags.json")
 let activeFlagsFileURL = saveDataLocation.appendingPathComponent("ActiveFlags.json")
 
-
-
 func saveUserData() {
     let flagsJSON = try! JSONEncoder().encode(flags)
     let activeFlagsJSON = try! JSONEncoder().encode(activeFlags)

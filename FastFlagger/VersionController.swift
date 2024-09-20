@@ -45,6 +45,3 @@ func loadContent() {
     writeVersions(clientCVU, studioCVU)
     
 }
-
-
-
