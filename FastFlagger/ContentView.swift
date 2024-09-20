@@ -87,6 +87,24 @@ func saveJSON(_ jsonData: Data) {
     } else {return}
 }
 
+func applyJSON(_ jsonData: Data) {
+    let fileManager = FileManager.default
+    let umpobcb = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
+    umpobcb[0] = true
+    let isD = umpobcb
+    
+    if !fileManager.fileExists(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/", isDirectory: isD) {
+        try! fileManager.createDirectory(at: URL(fileURLWithPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings"), withIntermediateDirectories: true)
+    }
+    
+    if !fileManager.fileExists(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json") {
+        fileManager.createFile(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json", contents: jsonData)
+    } else {
+        try! fileManager.removeItem(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json")
+        fileManager.createFile(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json", contents: jsonData)
+    }
+}
+
 func reloadContentViewAfterDelete() {
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow
@@ -192,7 +210,14 @@ struct ContentView: View {
                     Image(systemName: "gamecontroller.fill")
                         .imageScale(.large)
                         .foregroundStyle(.tint)
-                    Button("Open Client") {
+                    Button("Save, Apply, & Open Client") {
+                        
+                        let dictionary: [String: Any] = flags
+                        let output = convertDictionaryToJSON(dictionary)
+                        let conData = convertJSONStringToJSONData(output!)
+                        
+                        applyJSON(conData!)
+                        
                         let robloxPlayer = NSURL(fileURLWithPath: "/Applications/Roblox.app", isDirectory: true) as URL
                         NSWorkspace.shared.open(robloxPlayer)
                     }.padding().buttonStyle(.borderedProminent).tint(.accentColor)
