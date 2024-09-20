@@ -21,7 +21,3 @@ struct CompletedView: View {
         }
     }
 }
-
-#Preview {
-    ComingSoonView()
-}

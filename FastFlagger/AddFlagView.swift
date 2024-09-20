@@ -56,7 +56,3 @@ struct AddFlagView: View {
         }
     }
 }
-
-#Preview {
-    AddFlagView()
-}
