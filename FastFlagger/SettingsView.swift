@@ -41,11 +41,22 @@ struct SettingsView: View {
                 }
             }
             
-            Button("Clear Flags") {
+            Button("Clear Data") {
                 flags.removeAll()
                 activeFlags.removeAll()
                 reloadContentViewAfterDelete()
-            }
+                
+                let fileManager = FileManager.default
+                
+                if fileManager.fileExists(atPath: flagsFileURL.path()) {
+                    try! fileManager.removeItem(at: flagsFileURL)
+                }
+                
+                if fileManager.fileExists(atPath: activeFlagsFileURL.path()) {
+                    try! fileManager.removeItem(at: activeFlagsFileURL)
+                }
+                
+            }.buttonStyle(.borderedProminent).tint(.red)
             
             Text("Client Version: \(clientVersion)")
             Text("Studio Version: \(studioVersion)")

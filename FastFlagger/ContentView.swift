@@ -62,7 +62,7 @@ func createFile(_ atPath: String, _ contents: Data?, _ urlAsURL: URL, _ attribut
 
 func saveJSON(_ jsonData: Data) {
     let dialog = NSOpenPanel();
-
+    
     dialog.title = "Save your FFlag";
     dialog.showsResizeIndicator = false;
     dialog.showsHiddenFiles = false;
@@ -70,18 +70,18 @@ func saveJSON(_ jsonData: Data) {
     dialog.canChooseFiles = false;
     dialog.canChooseDirectories = true;
     dialog.allowedContentTypes = [.json];
-
-
+    
+    
     if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
         let result = dialog.url
-
+        
         if (result != nil) {
             let path: String = (result?.path())!
             
             let success = createFile(path, jsonData, result!)
             if success {
                 @Environment(\.openWindow) var openWindow
-                openWindow(id: "done")
+                openWindow(id: "done") // change
             }
         }
     } else {return}
@@ -275,68 +275,67 @@ struct ContentView: View {
             Divider()
             Spacer()
             
-            /// **TITLES**
-            
-            HStack {
-                VStack {
-                    Image(systemName: "flag.fill")
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Text("Flags")
-                }.padding()
-                
-                Spacer()
-                
-                VStack {
-                    Image(systemName: "number")
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Text("Value")
-                }.padding()
-                
 
-                
-                Spacer()
-                
-                VStack {
-                    Image(systemName: "trash.fill")
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Text("Delete")
-                }.padding()
-                
-                Spacer()
-                
-                VStack {
-                    Image(systemName: "hand.raised.fill")
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Text("Active")
-                }.padding()
-            }
-            
-            /// **CONTENT**
-            VStack {
-                ForEach(Array(flags.keys), id: \.self) { flag in
+                /// **TITLES**
+                HStack {
                     HStack {
-                        Text(flag).padding()
+                        VStack {
+                            Image(systemName: "flag.fill")
+                                .imageScale(.large)
+                                .foregroundStyle(.tint)
+                            Text("Flags")
+                        }.padding()
                         
                         Spacer()
                         
-                        Text(getFlagValueAsString(flag)).padding() // Flag Value
+                        VStack {
+                            Image(systemName: "number")
+                                .imageScale(.large)
+                                .foregroundStyle(.tint)
+                            Text("Value").multilineTextAlignment(.center)
+                        }.padding()
+                    }
+                    
+                    HStack {
+                        VStack {
+                            Image(systemName: "hand.raised.fill")
+                                .imageScale(.large)
+                                .foregroundStyle(.tint)
+                            Text("Active")
+                        }.padding()
                         
-                        Spacer()
-                        
-                        Button("􀆨") {
-                            flagStatusControl(flag)
-                        }.padding().buttonStyle(.borderedProminent).tint(.blue)
-                        
-                        Spacer()
-                        
-                        Button("􀈒") {
-                            deleteFlag(flag)
-                        }.padding().buttonStyle(.borderedProminent).tint(.red)
-                        
+                        VStack {
+                            Image(systemName: "trash.fill")
+                                .imageScale(.large)
+                                .foregroundStyle(.tint)
+                            Text("Delete")
+                        }.padding()
+                    }
+                }
+                
+            ScrollView {
+                /// **CONTENT**
+                VStack {
+                    ForEach(Array(flags.keys), id: \.self) { flag in
+                        HStack {
+                            HStack {
+                                Text(flag).padding()
+                                
+                                Spacer()
+                                
+                                Text(getFlagValueAsString(flag)).padding().multilineTextAlignment(.center)
+                                
+                            }
+                            HStack {
+                                Button("􀆨") {
+                                    flagStatusControl(flag)
+                                }.padding().buttonStyle(.borderedProminent).tint(.blue)
+                                
+                                Button("􀈒") {
+                                    deleteFlag(flag)
+                                }.padding().buttonStyle(.borderedProminent).tint(.red)
+                            }
+                        }
                     }
                 }
             }
@@ -344,6 +343,8 @@ struct ContentView: View {
         }.onAppear() {
             loadContent()
             loadUserData()
+        }.onDisappear() {
+            saveUserData()
         }
     }
 }
