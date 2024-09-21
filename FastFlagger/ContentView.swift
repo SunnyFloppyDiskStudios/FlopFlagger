@@ -14,17 +14,11 @@ import UniformTypeIdentifiers
 let workspace = NSWorkspace.shared
 let applications = workspace.runningApplications
 
-func convertJSONStringToJSONData(_ jsonString: String) -> Data? {
+func convertJSONStringToJSONData(_ jsonEncodeTo: [String:String]) -> Data? {
     do {
-        let jsonEncoder = JSONEncoder()
-        jsonEncoder.outputFormatting = .withoutEscapingSlashes
-        
-        let dataJSON = try jsonEncoder.encode(jsonString)
+        let dataJSON = try! JSONEncoder().encode(jsonEncodeTo)
         
         return dataJSON
-    } catch {
-        print(error.localizedDescription)
-        return nil
     }
 }
 
@@ -113,20 +107,6 @@ func reloadContentViewAfterDelete() {
     openWindow(id: "content")
 }
 
-func convertDictionaryToJSON(_ dictionary: [String: Any]) -> String? {
-    guard let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: []) else {
-        print("Something is wrong while converting dictionary to JSON data.")
-        return nil
-    }
-    guard let jsonString = String(data: jsonData, encoding: String.Encoding.utf8) else {
-        print("Something is wrong while converting JSON data to JSON string.")
-        return nil
-    }
-    return jsonString
-}
-
-
-
 func deleteFlag(_ flag: String) {
     flags.removeValue(forKey: flag)
     reloadContentViewAfterDelete()
@@ -188,9 +168,8 @@ struct ContentView: View {
                         .imageScale(.large)
                         .foregroundStyle(.tint)
                     Button("Export JSON") {
-                        let dictionary: [String: Any] = flags
-                        let output = convertDictionaryToJSON(dictionary)
-                        let conData = convertJSONStringToJSONData(output!)
+                        let dictionary: [String:String] = flags
+                        let conData = convertJSONStringToJSONData(dictionary)
                         
                         saveJSON(conData!)
                         
@@ -216,14 +195,13 @@ struct ContentView: View {
                 }
                 
                 HStack {
-                    Image(systemName: "gamecontroller.fill")
+                    Image("rolobox")
                         .imageScale(.large)
                         .foregroundStyle(.tint)
-                    Button("Apply, & Open Client") {
+                    Button("Apply & Open Client") {
                         
-                        let dictionary: [String: Any] = flags
-                        let output = convertDictionaryToJSON(dictionary)
-                        let conData = convertJSONStringToJSONData(output!)
+                        let dictionary: [String:String] = flags
+                        let conData = convertJSONStringToJSONData(dictionary)
                         
                         saveUserData()
                         
@@ -254,22 +232,6 @@ struct ContentView: View {
                         .imageScale(.large)
                         .foregroundStyle(.tint)
                 }.padding()
-            }
-            
-            VStack {
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Text("FFlag Search")
-                }
-                
-                TextField(
-                    "COMING SOON!",
-                    text: $search
-                ).multilineTextAlignment(.center).onSubmit {
-                    openWindow(id: "comingsoon")
-                }
             }
             
             Divider()
@@ -313,9 +275,9 @@ struct ContentView: View {
                     }
                 }
                 
-            ScrollView {
+            List {
                 /// **CONTENT**
-                VStack {
+
                     ForEach(Array(flags.keys), id: \.self) { flag in
                         HStack {
                             HStack {
@@ -336,10 +298,25 @@ struct ContentView: View {
                                 }.padding().buttonStyle(.borderedProminent).tint(.red)
                             }
                         }
-                    }
                 }
-            }
+            }.alternatingRowBackgrounds()
             Spacer()
+            
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .imageScale(.large)
+                    .foregroundStyle(.tint)
+                Text("FFlag Search")
+                
+                TextField(
+                    "COMING SOON!",
+                    text: $search
+                ).multilineTextAlignment(.center).onSubmit {
+                    openWindow(id: "comingsoon")
+                }
+            }.padding()
+            
+            
         }.onAppear() {
             loadContent()
             loadUserData()

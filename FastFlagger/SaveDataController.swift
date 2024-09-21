@@ -18,7 +18,6 @@ var activeFlags: [String: String] = [
 ]
 
 let saveDataLocation = URL.documentsDirectory
-
 let flagsFileURL = saveDataLocation.appendingPathComponent("Flags.json")
 let activeFlagsFileURL = saveDataLocation.appendingPathComponent("ActiveFlags.json")
 

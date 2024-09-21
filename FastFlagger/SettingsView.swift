@@ -41,6 +41,13 @@ struct SettingsView: View {
                 }
             }
             
+            Button("Remove Client Flags") {
+                let fileManager = FileManager.default
+                if fileManager.fileExists(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json") {
+                    try! fileManager.removeItem(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json")
+                }
+            }.buttonStyle(.borderedProminent).tint(.orange)
+            
             Button("Clear Data") {
                 flags.removeAll()
                 activeFlags.removeAll()
