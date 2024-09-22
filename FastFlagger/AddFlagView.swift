@@ -50,6 +50,15 @@ struct AddFlagView: View {
             ).multilineTextAlignment(.center)
             
             Button("Insert Flag") {
+                if valueEntered.lowercased().contains("true") {
+                    valueEntered = "true"
+                } else if valueEntered.lowercased().contains("false") {
+                    valueEntered = "false"
+                } else {
+                    valueEntered = valueEntered
+                }
+                
+                
                 addFlagToFlags(flagEntered, selection, valueEntered)
                 reloadContentView()
             }

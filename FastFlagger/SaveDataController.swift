@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Foundation
-import CoreData
 
 var flags: [String: String] = [
     :
