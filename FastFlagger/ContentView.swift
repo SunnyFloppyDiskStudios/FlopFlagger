@@ -289,11 +289,11 @@ struct ContentView: View {
                                 
                             }
                             HStack {
-                                Button("S") {
+                                Button("-") {
                                     flagStatusControl(flag)
                                 }.padding().buttonStyle(.borderedProminent).tint(.blue)
                                 
-                                Button("D") {
+                                Button("x") {
                                     deleteFlag(flag)
                                 }.padding().buttonStyle(.borderedProminent).tint(.red)
                             }
