@@ -25,6 +25,7 @@ func importJSONToFlags() {
         
         if (result != nil) {
             flags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: result!))
+            activeFlags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: result!))
             reloadContentViewAfterDelete()
         }
     } else {return}

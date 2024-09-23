@@ -32,11 +32,7 @@ struct SettingsView: View {
             
             Text("Not intended for commercial or destructive use")
             
-            Button("Disable All Flags") {
-                activeFlags.removeAll()
-            }
-            
-            Button("Support") {
+            Button("Discord Support & Updates") {
                 @Environment(\.openURL) var openURL
                 
                 if let url = URL(string: "https://discord.com/invite/XQ3wJh3tXw") {
@@ -48,14 +44,18 @@ struct SettingsView: View {
                 
             }.buttonStyle(.borderedProminent).tint(.accentColor)
             
+            Button("Disable App Flags") {
+                activeFlags.removeAll()
+            }.buttonStyle(.borderedProminent).tint(.teal)
+            
             Button("Remove Client Flags") {
                 let fileManager = FileManager.default
                 if fileManager.fileExists(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json") {
                     try! fileManager.removeItem(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json")
                 }
-            }.buttonStyle(.borderedProminent).tint(.orange)
+            }.buttonStyle(.borderedProminent).tint(.purple)
             
-            Button("Clear Data") {
+            Button("Clear App Flags") {
                 flags.removeAll()
                 activeFlags.removeAll()
                 reloadContentViewAfterDelete()
