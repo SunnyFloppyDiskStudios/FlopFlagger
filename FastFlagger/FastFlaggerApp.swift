@@ -37,6 +37,10 @@ struct FastFlaggerApp: App {
             PresetsView()
         }.defaultSize(width: 500, height: 600)
         
+        WindowGroup(id: "presetNaming") {
+            PresetNameView()
+        }.defaultSize(width: 300, height: 150)
+        
         Settings {
             SettingsView()
         }
