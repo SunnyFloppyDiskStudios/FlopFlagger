@@ -181,7 +181,7 @@ struct ContentView: View {
                         .imageScale(.large)
                         .foregroundStyle(.tint)
                     Button("Import JSON") {
-                        openWindow(id: "comingsoon")
+                        importJSONToFlags()
                     }.padding()
                 }
                 
@@ -216,7 +216,7 @@ struct ContentView: View {
                 
                 HStack {
                     Button("Presets") {
-                        openWindow(id: "comingsoon")
+                        openWindow(id: "presets")
                     }
                     Image(systemName: "archivebox.fill")
                         .imageScale(.large)

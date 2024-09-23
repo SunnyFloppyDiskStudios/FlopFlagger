@@ -18,8 +18,11 @@ func writeVersions(_ CVU: String, _ SVU: String) {
 
 
 struct SettingsView: View {
-    
     var body: some View {
+        let saveDataLocation = URL.documentsDirectory.appendingPathComponent("FlopFlagger", isDirectory: true)
+        let flagsFileURL = saveDataLocation.appendingPathComponent("Flags.json")
+        let activeFlagsFileURL = saveDataLocation.appendingPathComponent("ActiveFlags.json")
+        
         VStack {
             Image(systemName: "person.fill")
                 .imageScale(.large)
@@ -40,6 +43,10 @@ struct SettingsView: View {
                     openURL(url)
                 }
             }
+            
+            Button("Preset Files") {
+                
+            }.buttonStyle(.borderedProminent).tint(.accentColor)
             
             Button("Remove Client Flags") {
                 let fileManager = FileManager.default
