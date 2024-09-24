@@ -32,17 +32,30 @@ struct SettingsView: View {
             
             Text("Not intended for commercial or destructive use")
             
-            Button("Discord Support & Updates") {
-                @Environment(\.openURL) var openURL
-                
-                if let url = URL(string: "https://discord.com/invite/XQ3wJh3tXw") {
-                    openURL(url)
+            HStack {
+                Image(systemName: "network.fill")
+                    .imageScale(.large)
+                    .foregroundStyle(.tint)
+                Button("Discord Support & Updates") {
+                    @Environment(\.openURL) var openURL
+                    
+                    if let url = URL(string: "https://discord.com/invite/XQ3wJh3tXw") {
+                        openURL(url)
+                    }
                 }
             }
             
-            Button("Preset Files") {
+            Button("Export JSON") {
+                let dictionary: [String:String] = flags
+                let conData = convertJSONStringToJSONData(dictionary)
                 
-            }.buttonStyle(.borderedProminent).tint(.accentColor)
+                saveJSON(conData!)
+                
+            }
+            
+            Button("Import JSON") {
+                importJSONToFlags()
+            }
             
             Button("Disable App Flags") {
                 activeFlags.removeAll()
@@ -69,8 +82,9 @@ struct SettingsView: View {
                 if fileManager.fileExists(atPath: activeFlagsFileURL.path()) {
                     try! fileManager.removeItem(at: activeFlagsFileURL)
                 }
-                
             }.buttonStyle(.borderedProminent).tint(.red)
+            
+            Spacer()
             
             Text("Client Version: \(clientVersion)")
             Text("Studio Version: \(studioVersion)")

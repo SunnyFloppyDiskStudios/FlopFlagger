@@ -12,6 +12,11 @@ let plStr = presetLocation.path()
 
 let fileManager = FileManager.default
 
+func openAndSelectFile(_ filename:String) {
+    let files = [URL(fileURLWithPath: filename)];
+    NSWorkspace.shared.activateFileViewerSelecting(files);
+}
+
 func getFiles(in url: URL) -> [URL] {
     var files: [URL] = []
     do {
@@ -20,14 +25,11 @@ func getFiles(in url: URL) -> [URL] {
         
         for file in jsonFiles {
             files.append(file)
-            // Call the function recursively if the file is a directory
             if file.hasDirectoryPath {
                 files += getFiles(in: file)
             }
         }
-    } catch {
-        print("Error while enumerating files: \(error.localizedDescription)")
-    }
+    } catch {print(error.localizedDescription)}
     return files
 }
 
@@ -60,12 +62,14 @@ struct PresetsView: View {
                 
                 Spacer()
                 
+                Button("Preset Folder") {openAndSelectFile(plStr)}.padding()
+                
+                Spacer()
+                
                 Button("Get More Presets") {
                     @Environment(\.openURL) var openURL
                     
-                    if let url = URL(string: "https://discord.com/invite/XQ3wJh3tXw") {
-                        openURL(url)
-                    }
+                    if let url = URL(string: "https://discord.com/invite/XQ3wJh3tXw") {openURL(url)}
                 }.padding()
             }
             
@@ -84,7 +88,7 @@ struct PresetsView: View {
                         }
                     }
                 }
-            }.alternatingRowBackgrounds()
+            }.listStyle(.inset(alternatesRowBackgrounds: true))
         }
     }
 }
