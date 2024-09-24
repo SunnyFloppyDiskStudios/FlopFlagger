@@ -99,6 +99,24 @@ func applyJSON(_ jsonData: Data) {
     }
 }
 
+func applyStudioJSON(_ jsonData: Data) {
+    let fileManager = FileManager.default
+    let umpobcb = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
+    umpobcb[0] = true
+    let isD = umpobcb
+    
+    if !fileManager.fileExists(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/", isDirectory: isD) {
+        try! fileManager.createDirectory(at: URL(fileURLWithPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings"), withIntermediateDirectories: true)
+    }
+    
+    if !fileManager.fileExists(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/ClientAppSettings.json") {
+        fileManager.createFile(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/ClientAppSettings.json", contents: jsonData)
+    } else {
+        try! fileManager.removeItem(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/ClientAppSettings.json")
+        fileManager.createFile(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/ClientAppSettings.json", contents: jsonData)
+    }
+}
+
 func reloadContentViewAfterDelete() {
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow
@@ -164,28 +182,6 @@ struct ContentView: View {
                 }.padding()
                 
                 HStack {
-                    Image(systemName: "square.and.arrow.up")
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Button("Export JSON") {
-                        let dictionary: [String:String] = flags
-                        let conData = convertJSONStringToJSONData(dictionary)
-                        
-                        saveJSON(conData!)
-                        
-                    }.padding()
-                }
-                
-                HStack {
-                    Image(systemName: "square.and.arrow.down")
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Button("Import JSON") {
-                        importJSONToFlags()
-                    }.padding()
-                }
-                
-                HStack {
                     Image(systemName: "internaldrive.fill")
                         .imageScale(.large)
                         .foregroundStyle(.tint)
@@ -198,6 +194,7 @@ struct ContentView: View {
                     Image("rolobox")
                         .imageScale(.large)
                         .foregroundStyle(.tint)
+                        .padding()
                     Button("Apply & Open Client") {
                         
                         let dictionary: [String:String] = flags
@@ -209,7 +206,19 @@ struct ContentView: View {
                         
                         let robloxPlayer = NSURL(fileURLWithPath: "/Applications/Roblox.app", isDirectory: true) as URL
                         NSWorkspace.shared.open(robloxPlayer)
-                    }.padding().buttonStyle(.borderedProminent).tint(.accentColor)
+                    }.buttonStyle(.borderedProminent).tint(.accentColor)
+                    
+                    Button("Studio") {
+                        let dictionary: [String:String] = flags
+                        let conData = convertJSONStringToJSONData(dictionary)
+                        
+                        saveUserData()
+                        
+                        applyStudioJSON(conData!)
+                        
+                        let studioPlayer = NSURL(fileURLWithPath: "/Applications/RobloxStudio.app", isDirectory: true) as URL
+                        NSWorkspace.shared.open(studioPlayer)
+                    }.buttonStyle(.borderedProminent).tint(.accentColor)
                 }
                 
                 Spacer()
@@ -224,7 +233,7 @@ struct ContentView: View {
                 }.padding()
                 
                 HStack {
-                    Button("Settings") {
+                    Button("Additional") {
                         openWindow(id: "settings")
                     }
                     
