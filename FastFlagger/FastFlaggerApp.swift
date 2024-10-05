@@ -13,37 +13,33 @@ struct FastFlaggerApp: App {
     var vc2 = AddFlagView()
     
     var body: some Scene {
-        WindowGroup(id: "content") {
+        WindowGroup("FlopFlagger", id: "content") {
             ContentView()
         }.defaultSize(width: 1200, height: 650)
         
-        WindowGroup(id: "addflag") {
+        Window("Add FastFlags", id: "addflag") {
             AddFlagView()
         }.defaultSize(width: 450, height: 250)
         
-        WindowGroup(id: "settings") {
+        Window("Additional", id: "settings") {
             SettingsView()
         }.defaultSize(width: 375, height: 225)
         
-        WindowGroup(id: "comingsoon") {
+        Window("Coming Soon", id: "comingsoon") {
             ComingSoonView()
         }.defaultSize(width: 150, height: 150)
         
-        WindowGroup(id: "done") {
+        Window("Task Completed", id: "done") {
             CompletedView()
         }.defaultSize(width: 150, height: 150)
         
-        WindowGroup(id: "presets") {
+        Window("Presets", id: "presets") {
             PresetsView()
         }.defaultSize(width: 500, height: 600)
         
-        WindowGroup(id: "presetNaming") {
+        WindowGroup("Preset Name", id: "presetNaming") {
             PresetNameView()
         }.defaultSize(width: 300, height: 150)
-        
-        WindowGroup(id: "noob") {
-            PresetNameView()
-        }.defaultSize(width: 600, height: 150)
         
         Settings {
             SettingsView()
