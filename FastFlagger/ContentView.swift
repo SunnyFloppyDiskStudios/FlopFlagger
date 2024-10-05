@@ -283,32 +283,30 @@ struct ContentView: View {
                         }.padding()
                     }
                 }
-                
-            List {
-                /// **CONTENT**
+            
+            /// **CONTENT**
+            List(Array(flags.keys), id: \.self) { flag in
 
-                    ForEach(Array(flags.keys), id: \.self) { flag in
+                    HStack {
                         HStack {
-                            HStack {
-                                Text(flag).padding()
-                                
-                                Spacer()
-                                
-                                Text(getFlagValueAsString(flag)).padding().multilineTextAlignment(.center)
-                                
-                            }
-                            HStack {
-                                Button("-") {
-                                    flagStatusControl(flag)
-                                }.padding().buttonStyle(.borderedProminent).tint(.blue)
-                                
-                                Button("x") {
-                                    deleteFlag(flag)
-                                }.padding().buttonStyle(.borderedProminent).tint(.red)
-                            }
+                            Text(flag).padding()
+                            
+                            Spacer()
+                            
+                            Text(getFlagValueAsString(flag)).padding().multilineTextAlignment(.center)
+                            
+                        }
+                        HStack {
+                            Button("-") {
+                                flagStatusControl(flag)
+                            }.padding().buttonStyle(.borderedProminent).tint(.blue)
+                            
+                            Button("x") {
+                                deleteFlag(flag)
+                            }.padding().buttonStyle(.borderedProminent).tint(.red)
                         }
                 }
-            }.alternatingRowBackgrounds()
+            }.listStyle(.inset(alternatesRowBackgrounds: true))
             Spacer()
             
             HStack {

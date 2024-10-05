@@ -2,7 +2,7 @@
 //  ImportController.swift
 //  FlopFlagger
 //
-//  Created by Arav Prasad on 23/09/2024.
+//  Created by SunnyFlops on 23/09/2024.
 //
 
 import Foundation
@@ -23,7 +23,7 @@ func importJSONToFlags() {
     if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
         let result = dialog.url
         
-        if (result != nil) {
+        if (result != nil) {            
             flags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: result!))
             activeFlags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: result!))
             reloadContentViewAfterDelete()

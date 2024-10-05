@@ -2,7 +2,7 @@
 //  PresetsView.swift
 //  FlopFlagger
 //
-//  Created by Arav Prasad on 21/09/2024.
+//  Created by SunnyFlops on 21/09/2024.
 //
 
 import SwiftUI
@@ -83,7 +83,6 @@ struct PresetsView: View {
                             
                             flags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: file))
                             reloadContentViewAfterDelete()
-                            
                             closePresets()
                         }
                     }
