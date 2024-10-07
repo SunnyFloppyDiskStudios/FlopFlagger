@@ -117,7 +117,7 @@ func applyStudioJSON(_ jsonData: Data) {
     }
 }
 
-func reloadContentViewAfterDelete() {
+func reloadContentViewOnly() {
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow
     
@@ -127,12 +127,10 @@ func reloadContentViewAfterDelete() {
 
 func deleteFlag(_ flag: String) {
     flags.removeValue(forKey: flag)
-    reloadContentViewAfterDelete()
+    reloadContentViewOnly()
 }
 
 func flagStatusControl(_ flag: String) {
-    @State var colourToggle: Bool = false
-    
     if activeFlags[flag] != nil {
         activeFlags.removeValue(forKey: flag)
     } else {
@@ -140,6 +138,9 @@ func flagStatusControl(_ flag: String) {
             activeFlags.updateValue(flags[flag] ?? "ERR_CORRUPT_VAL", forKey: flag)
         }
     }
+    
+    reloadContentViewOnly()
+    
 }
 
 func getFlagValue(_ flag: String) -> Any {
@@ -153,21 +154,27 @@ func getFlagValueAsString(_ flag: String) -> any StringProtocol {
     return returnValue as any StringProtocol
 }
 
+func searchFlags(_ userInput: String) {
+    searchedFlags.removeAll()
+    
+    if !searchedFlags.contains(where: { $0.key == userInput }) {
+        searchedFlags.updateValue(true, forKey: userInput)
+    } else {
+        searchedFlags.updateValue(false, forKey: userInput)
+    }
+    
+    print(userInput)
+    print(searchedFlags)
+    
+    reloadContentViewOnly()
+}
+
 struct ContentView: View {
     @Environment(\.openWindow) var openWindow
     
     @State var isActiveToggleOn: Bool = false
     
     @State var search: String = ""
-    
-    //    func SearchInFlags() {
-    //        if let flagsJ = flags as? [String: Any], let code = flags["code"] as? Int {
-    //          print(code)
-    //        }
-    //
-    //        let flagValue = flags.object(forKey: search)
-    //        let flag
-    //    }
     
     var body: some View {
         VStack {
@@ -197,7 +204,7 @@ struct ContentView: View {
                         .padding()
                     Button("Apply & Open Client") {
                         
-                        let dictionary: [String:String] = flags
+                        let dictionary: [String:String] = activeFlags
                         let conData = convertJSONStringToJSONData(dictionary)
                         
                         saveUserData()
@@ -289,7 +296,11 @@ struct ContentView: View {
 
                     HStack {
                         HStack {
-                            Text(flag).padding()
+                            Text(flag).padding().foregroundStyle(
+                                searchedFlags.index(forKey: flag) != nil ? .yellow :
+                                    activeFlags.index(forKey: flag) == nil ? .blue :
+                                        .primary
+                            )
                             
                             Spacer()
                             
@@ -319,7 +330,7 @@ struct ContentView: View {
                     "Search",
                     text: $search
                 ).multilineTextAlignment(.center).onSubmit {
-                    openWindow(id: "comingsoon")
+                    searchFlags(search)
                 }
             }.padding()
             

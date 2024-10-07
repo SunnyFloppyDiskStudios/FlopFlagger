@@ -16,6 +16,10 @@ var activeFlags: [String: String] = [
     :
 ]
 
+var searchedFlags: [String: Bool] = [
+    :
+]
+
 func saveUserData() {
     let fileManager = FileManager.default
     

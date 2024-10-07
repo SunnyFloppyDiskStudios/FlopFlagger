@@ -82,7 +82,8 @@ struct PresetsView: View {
                             print(file.lastPathComponent)
                             
                             flags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: file))
-                            reloadContentViewAfterDelete()
+                            activeFlags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: file))
+                            reloadContentViewOnly()
                             closePresets()
                         }
                     }
