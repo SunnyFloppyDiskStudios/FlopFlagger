@@ -316,7 +316,7 @@ struct ContentView: View {
                 Text("FFlag Search")
                 
                 TextField(
-                    "COMING SOON!",
+                    "Search",
                     text: $search
                 ).multilineTextAlignment(.center).onSubmit {
                     openWindow(id: "comingsoon")
