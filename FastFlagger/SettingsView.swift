@@ -71,7 +71,7 @@ struct SettingsView: View {
             Button("Clear App Flags") {
                 flags.removeAll()
                 activeFlags.removeAll()
-                reloadContentViewAfterDelete()
+                reloadContentViewOnly()
                 
                 let fileManager = FileManager.default
                 
