@@ -16,7 +16,9 @@ let applications = workspace.runningApplications
 
 func convertJSONStringToJSONData(_ jsonEncodeTo: [String:String]) -> Data? {
     do {
-        let dataJSON = try! JSONEncoder().encode(jsonEncodeTo)
+        let jse = JSONEncoder()
+        jse.outputFormatting = .prettyPrinted
+        let dataJSON = try! jse.encode(jsonEncodeTo)
         
         return dataJSON
     }
