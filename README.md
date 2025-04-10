@@ -8,4 +8,4 @@ Save your favourite presets, so you can always access features when you need the
 
 Share presets with others, so they can also experience beta features for themselves.
 
-Join the [Sunny Floppy Disk Studios]() community server to discuss FlopFlagger, as well as upcoming projects!
+Join the [Sunny Floppy Disk Studios](https://discord.gg/SGGnUUjf7P) community server to discuss FlopFlagger, as well as upcoming projects!

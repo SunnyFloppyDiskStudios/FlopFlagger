@@ -159,16 +159,20 @@ func getFlagValueAsString(_ flag: String) -> any StringProtocol {
 func searchFlags(_ userInput: String) {
     searchedFlags.removeAll()
     
-    if !searchedFlags.contains(where: { $0.key == userInput }) {
-        searchedFlags.updateValue(true, forKey: userInput)
-    } else {
-        searchedFlags.updateValue(false, forKey: userInput)
+    for flag in flags {
+        if flag.key.localizedCaseInsensitiveContains(userInput) {
+            searchedFlags[flag.key] = true
+        }
     }
     
-    print(userInput)
-    print(searchedFlags)
-    
     reloadContentViewOnly()
+}
+
+
+struct FlagItem: Identifiable {
+    var id: String { flag }
+    let flag: String
+    let value: String
 }
 
 struct ContentView: View {
@@ -255,74 +259,39 @@ struct ContentView: View {
             Divider()
             Spacer()
             
-
-                /// **TITLES**
-                HStack {
-                    HStack {
-                        VStack {
-                            Image(systemName: "flag.fill")
-                                .imageScale(.large)
-                                .foregroundStyle(.tint)
-                            Text("Flags")
-                        }.padding()
-                        
-                        Spacer()
-                        
-                        VStack {
-                            Image(systemName: "number")
-                                .imageScale(.large)
-                                .foregroundStyle(.tint)
-                            Text("Value").multilineTextAlignment(.center)
-                        }.padding()
-                    }
-                    
-                    HStack {
-                        VStack {
-                            Image(systemName: "hand.raised.fill")
-                                .imageScale(.large)
-                                .foregroundStyle(.tint)
-                            Text("Active")
-                        }.padding()
-                        
-                        VStack {
-                            Image(systemName: "trash.fill")
-                                .imageScale(.large)
-                                .foregroundStyle(.tint)
-                            Text("Delete")
-                        }.padding()
-                    }
-                }
-            
             /// **CONTENT**
-            List(Array(flags.keys), id: \.self) { flag in
-
-                    HStack {
-                        HStack {
-                            Text(flag).padding().foregroundStyle(
-                                searchedFlags.index(forKey: flag) != nil ? .yellow :
-                                    activeFlags.index(forKey: flag) == nil ? .blue :
-                                        .primary
-                            )
-                            
-                            Spacer()
-                            
-                            Text(getFlagValueAsString(flag)).padding().multilineTextAlignment(.center)
-                            
-                        }
-                        HStack {
-                            Button("-") {
-                                flagStatusControl(flag)
-                            }.padding().buttonStyle(.borderedProminent).tint(.blue)
-                            
-                            Button("x") {
-                                deleteFlag(flag)
-                            }.padding().buttonStyle(.borderedProminent).tint(.red)
-                        }
+            var flagItems: [FlagItem] {
+                flags.keys.map { key in
+                    FlagItem(flag: key, value: getFlagValueAsString(key) as? String ?? "")
                 }
-            }.listStyle(.inset(alternatesRowBackgrounds: true))
+            }
+
+            Table(flagItems) {
+                TableColumn("Flag") { item in
+                    Text(item.flag)
+                        .foregroundStyle(
+                            searchedFlags.index(forKey: item.flag) != nil ? .yellow :
+                            activeFlags.index(forKey: item.flag) == nil ? .blue :
+                            .primary
+                        )
+                }
+                
+                TableColumn("Value") { item in
+                    Text(item.value)
+                        .multilineTextAlignment(.center)
+                }
+            }
+            .tableStyle(.inset)
+
+            
             Spacer()
             
             HStack {
+                Button("Delete") {
+                    
+                }
+                .tint(.red)
+                
                 Image(systemName: "magnifyingglass")
                     .imageScale(.large)
                     .foregroundStyle(.tint)
@@ -344,4 +313,9 @@ struct ContentView: View {
             saveUserData()
         }
     }
+}
+
+
+#Preview {
+    ContentView()
 }
