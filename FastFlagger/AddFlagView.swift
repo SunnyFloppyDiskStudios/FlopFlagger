@@ -9,8 +9,6 @@ import SwiftUI
 import Foundation
 import ExtensionKit
 
-let states = ["String", "Number", "Bool"]
-
 func addFlagToFlags(_ flag: String, _ type: String, _ val: String) {
     let trueValue: String = String(val)
     
