@@ -101,24 +101,6 @@ func applyJSON(_ jsonData: Data) {
     }
 }
 
-func applyStudioJSON(_ jsonData: Data) {
-    let fileManager = FileManager.default
-    let umpobcb = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
-    umpobcb[0] = true
-    let isD = umpobcb
-    
-    if !fileManager.fileExists(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/", isDirectory: isD) {
-        try! fileManager.createDirectory(at: URL(fileURLWithPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings"), withIntermediateDirectories: true)
-    }
-    
-    if !fileManager.fileExists(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/ClientAppSettings.json") {
-        fileManager.createFile(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/ClientAppSettings.json", contents: jsonData)
-    } else {
-        try! fileManager.removeItem(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/ClientAppSettings.json")
-        fileManager.createFile(atPath: "/Applications/RobloxStudio.app/Contents/MacOS/ClientSettings/ClientAppSettings.json", contents: jsonData)
-    }
-}
-
 func reloadContentViewOnly() {
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow
@@ -208,18 +190,6 @@ struct ContentView: View {
                         
                         let robloxPlayer = NSURL(fileURLWithPath: "/Applications/Roblox.app", isDirectory: true) as URL
                         NSWorkspace.shared.open(robloxPlayer)
-                    }.buttonStyle(.borderedProminent).tint(.accentColor)
-                    
-                    Button("Studio") {
-                        let dictionary: [String:String] = flags
-                        let conData = convertJSONStringToJSONData(dictionary)
-                        
-                        saveUserData()
-                        
-                        applyStudioJSON(conData!)
-                        
-                        let studioPlayer = NSURL(fileURLWithPath: "/Applications/RobloxStudio.app", isDirectory: true) as URL
-                        NSWorkspace.shared.open(studioPlayer)
                     }.buttonStyle(.borderedProminent).tint(.accentColor)
                 }
                 
