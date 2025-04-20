@@ -82,7 +82,12 @@ struct SettingsView: View {
             Text("Client Version: \(clientVersion)")
             Text("Studio Version: \(studioVersion)")
             
-        }.padding()
+        }
+        .padding()
+        .onAppear {
+            loadContent()
+        }
         
     }
+
 }
