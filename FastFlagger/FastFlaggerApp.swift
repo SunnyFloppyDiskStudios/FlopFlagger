@@ -21,7 +21,7 @@ struct FastFlaggerApp: App {
             ContentView()
         }.defaultSize(width: 1200, height: 650)
         
-        Window("Add FastFlags", id: "addflag") {
+        Window("Add/Edit Flags", id: "addflag") {
             AddFlagView()
         }.defaultSize(width: 450, height: 250)
         

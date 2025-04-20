@@ -39,6 +39,7 @@ struct AddFlagView: View {
             Image(systemName: "flag.badge.ellipsis.fill")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
+                .padding()
             
             TextField(
                 "FastFlag",
@@ -64,18 +65,21 @@ struct AddFlagView: View {
                 Text("Invalid Flag Component")
             }
             
-            Button("OK") {
-                if valueEntered.isEmpty {
-                    if isOn {
-                        valueEntered = "true"
-                    } else {
-                        valueEntered = "false"
+            if flagEntered.contains("String") || flagEntered.contains("Flag") || flagEntered.contains("Int") {
+                Button("OK") {
+                    if valueEntered.isEmpty {
+                        if isOn {
+                            valueEntered = "true"
+                        } else {
+                            valueEntered = "false"
+                        }
                     }
+                    
+                    addFlagToFlags(flagEntered, selection, valueEntered)
+                    reloadContentView()
                 }
-                
-                addFlagToFlags(flagEntered, selection, valueEntered)
-                reloadContentView()
             }
+            Spacer()
         }
     }
 }
