@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 import Foundation
 import ExtensionKit
 
@@ -30,31 +31,47 @@ struct AddFlagView: View {
     @State var flagEntered: String = ""
     @State var valueEntered: String = ""
     @State var selection = "String"
+    
+    @State var isOn: Bool = false
+    
     var body: some View {
         VStack {
             Image(systemName: "flag.badge.ellipsis.fill")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            HStack {
-                TextField(
-                    "Insert Flag",
-                    text: $flagEntered
-                ).multilineTextAlignment(.center)
-            }
+            
             TextField(
-                "Flag Value",
-                text: $valueEntered
+                "FastFlag",
+                text: $flagEntered
             ).multilineTextAlignment(.center)
             
-            Button("Insert Flag") {
-                if valueEntered.lowercased().contains("true") {
-                    valueEntered = "true"
-                } else if valueEntered.lowercased().contains("false") {
-                    valueEntered = "false"
-                } else {
-                    valueEntered = valueEntered
+            if flagEntered.contains("Flag") { // bool
+                Toggle(isOn: $isOn) {
+                    Text("Flag Value")
                 }
                 
+            } else if flagEntered.contains("Int") {
+                TextField("Flag Value", text: $valueEntered)
+                    .onReceive(Just(valueEntered)) { newValue in
+                        let filtered = newValue.filter { "0123456789".contains($0) }
+                        if filtered != newValue {
+                            self.valueEntered = filtered
+                        }
+                    }
+            } else if flagEntered.contains("String") {
+                TextField("Flag Value", text: $valueEntered)
+            } else {
+                Text("Invalid Flag Component")
+            }
+            
+            Button("OK") {
+                if valueEntered.isEmpty {
+                    if isOn {
+                        valueEntered = "true"
+                    } else {
+                        valueEntered = "false"
+                    }
+                }
                 
                 addFlagToFlags(flagEntered, selection, valueEntered)
                 reloadContentView()

@@ -261,7 +261,7 @@ struct ContentView: View {
                     text: $search
                 ).multilineTextAlignment(.center).onSubmit {
                     searchFlags(search)
-                }
+                }.textFieldStyle(.roundedBorder)
             }.padding()
             
             
