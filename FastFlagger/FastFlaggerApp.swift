@@ -12,6 +12,10 @@ struct FastFlaggerApp: App {
     var vc1 = ContentView()
     var vc2 = AddFlagView()
     
+    init() {
+        loadUserData()
+    }
+    
     var body: some Scene {
         WindowGroup("FlopFlagger", id: "content") {
             ContentView()
