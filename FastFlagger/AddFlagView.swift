@@ -46,39 +46,47 @@ struct AddFlagView: View {
                 text: $flagEntered
             ).multilineTextAlignment(.center)
             
-            if flagEntered.contains("Flag") { // bool
-                Toggle(isOn: $isOn) {
-                    Text("Flag Value")
-                }
-                
-            } else if flagEntered.contains("Int") {
-                TextField("Flag Value", text: $valueEntered)
-                    .onReceive(Just(valueEntered)) { newValue in
-                        let filtered = newValue.filter { "0123456789".contains($0) }
-                        if filtered != newValue {
-                            self.valueEntered = filtered
-                        }
-                    }
-            } else if flagEntered.contains("String") {
-                TextField("Flag Value", text: $valueEntered)
-            } else {
-                Text("Invalid Flag Component")
-            }
-            
-            if flagEntered.contains("String") || flagEntered.contains("Flag") || flagEntered.contains("Int") {
-                Button("OK") {
-                    if valueEntered.isEmpty {
-                        if isOn {
-                            valueEntered = "true"
-                        } else {
-                            valueEntered = "false"
-                        }
+            VStack {
+                if flagEntered.contains("Flag") { // bool
+                    Toggle(isOn: $isOn) {
+                        Text("Flag Value")
                     }
                     
-                    addFlagToFlags(flagEntered, selection, valueEntered)
-                    reloadContentView()
+                } else if flagEntered.contains("Int") {
+                    TextField("Flag Value", text: $valueEntered)
+                        .onReceive(Just(valueEntered)) { newValue in
+                            let filtered = newValue.filter { "0123456789".contains($0) }
+                            if filtered != newValue {
+                                self.valueEntered = filtered
+                            }
+                        }
+                } else if flagEntered.contains("String") {
+                    TextField("Flag Value", text: $valueEntered)
+                } else {
+                    Text("Invalid Flag Component")
                 }
-            }
+                
+                if flagEntered.contains("String") || flagEntered.contains("Flag") || flagEntered.contains("Int") {
+                    Button("OK") {
+                        if valueEntered.isEmpty {
+                            if flagEntered.contains("Flag") {
+                                if isOn {
+                                    valueEntered = "true"
+                                } else {
+                                    valueEntered = "false"
+                                }
+                            } else if flagEntered.contains("String") {
+                                valueEntered = " "
+                            } else if flagEntered.contains("Int") {
+                                valueEntered = "0"
+                            }
+                        }
+                        
+                        addFlagToFlags(flagEntered, selection, valueEntered)
+                        reloadContentView()
+                    }
+                }
+            }.frame(height: 50)
         }
     }
 }

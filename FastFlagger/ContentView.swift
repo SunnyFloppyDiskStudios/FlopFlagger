@@ -160,7 +160,7 @@ struct ContentView: View {
                     Image(systemName: "flag.badge.ellipsis.fill")
                         .imageScale(.large)
                         .foregroundStyle(.tint)
-                    Button("Insert Flag") {
+                    Button("Add/Edit Flag") {
                         openWindow(id: "addflag")
                     }
                 }.padding()
