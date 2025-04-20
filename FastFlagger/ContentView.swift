@@ -127,8 +127,10 @@ func reloadContentViewOnly() {
     openWindow(id: "content")
 }
 
-func deleteFlag(_ flag: String) {
-    flags.removeValue(forKey: flag)
+func deleteFlags(_ flagsToDelete: Set<String>) {
+    for key in flagsToDelete {
+        flags.removeValue(forKey: key)
+    }
     reloadContentViewOnly()
 }
 
@@ -166,6 +168,8 @@ struct ContentView: View {
     @Environment(\.openWindow) var openWindow
     
     @State var search: String = ""
+    
+    @State private var selectedFlagIDs = Set<String>()
     
     var body: some View {
         VStack {
@@ -251,7 +255,7 @@ struct ContentView: View {
                 }
             }
 
-            Table(flagItems) {
+            Table(flagItems, selection: $selectedFlagIDs) {
                 TableColumn("Flag") { item in
                     Text(item.flag)
                         .foregroundStyle(
@@ -259,7 +263,6 @@ struct ContentView: View {
                             .primary
                         )
                 }
-                
                 TableColumn("Value") { item in
                     Text(item.value)
                         .multilineTextAlignment(.center)
@@ -267,12 +270,14 @@ struct ContentView: View {
             }
             .tableStyle(.inset)
 
+
             
             Spacer()
             
             HStack {
                 Button("Delete") {
-                    deleteFlag("")
+                    deleteFlags(selectedFlagIDs)
+                    selectedFlagIDs.removeAll()
                 }
                 .buttonStyle(.borderedProminent).tint(.red)
                 
