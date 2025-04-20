@@ -85,7 +85,10 @@ struct SettingsView: View {
         }
         .padding()
         .onAppear {
-            loadContent()
+            Task {
+                await loadContent()
+            }
+            
         }
         
     }

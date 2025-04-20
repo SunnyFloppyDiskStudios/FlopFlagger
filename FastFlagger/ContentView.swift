@@ -296,7 +296,9 @@ struct ContentView: View {
             
             
         }.onAppear() {
-            loadContent()
+            Task {
+                await loadContent()
+            }
             loadUserData()
         }.onDisappear() {
             saveUserData()
