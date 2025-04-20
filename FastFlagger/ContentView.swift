@@ -171,14 +171,13 @@ struct ContentView: View {
                         .foregroundStyle(.tint)
                     Button("Save") {
                         saveUserData()
-                    }.padding().buttonStyle(.borderedProminent).tint(.accentColor)
-                }
+                    }.buttonStyle(.borderedProminent).tint(.accentColor)
+                }.padding()
                 
                 HStack {
                     Image("rolobox")
                         .imageScale(.large)
                         .foregroundStyle(.tint)
-                        .padding()
                     Button("Apply & Open Client") {
                         
                         let dictionary: [String:String] = flags
@@ -191,7 +190,7 @@ struct ContentView: View {
                         let robloxPlayer = NSURL(fileURLWithPath: "/Applications/Roblox.app", isDirectory: true) as URL
                         NSWorkspace.shared.open(robloxPlayer)
                     }.buttonStyle(.borderedProminent).tint(.accentColor)
-                }
+                }.padding()
                 
                 Spacer()
                 
