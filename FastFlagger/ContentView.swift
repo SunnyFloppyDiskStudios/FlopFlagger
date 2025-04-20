@@ -255,7 +255,7 @@ struct ContentView: View {
                 }
             }
 
-            Table(flagItems, selection: $selectedFlagIDs) {
+            Table(flagItems.sorted { $0.flag < $1.flag }, selection: $selectedFlagIDs) {
                 TableColumn("Flag") { item in
                     Text(item.flag)
                         .foregroundStyle(
