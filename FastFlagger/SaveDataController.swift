@@ -12,10 +12,6 @@ var flags: [String: String] = [
     :
 ]
 
-var activeFlags: [String: String] = [
-    :
-]
-
 var searchedFlags: [String: Bool] = [
     :
 ]
@@ -29,27 +25,19 @@ func saveUserData() {
     try? fileManager.createDirectory(at: saveDataLocation, withIntermediateDirectories: false)
     
     let flagsFileURL = saveDataLocation.appendingPathComponent("Flags.json")
-    let activeFlagsFileURL = saveDataLocation.appendingPathComponent("ActiveFlags.json")
     
     let flagsJSON = try! JSONEncoder().encode(flags)
-    let activeFlagsJSON = try! JSONEncoder().encode(activeFlags)
     
     try? flagsJSON.write(to: flagsFileURL)
-    try? activeFlagsJSON.write(to: activeFlagsFileURL)
 }
 
 func loadUserData() {
     let fileManager = FileManager.default
     let saveDataLocation = URL.documentsDirectory.appendingPathComponent("FlopFlagger", isDirectory: true)
     let flagsFileURL = saveDataLocation.appendingPathComponent("Flags.json")
-    let activeFlagsFileURL = saveDataLocation.appendingPathComponent("ActiveFlags.json")
     
     if fileManager.fileExists(atPath: flagsFileURL.path()) {
         flags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: flagsFileURL))
         print(flags)
-    }
-    
-    if fileManager.fileExists(atPath: activeFlagsFileURL.path()) {
-        activeFlags = try! JSONDecoder().decode([String: String].self, from: Data(contentsOf: activeFlagsFileURL))
     }
 }

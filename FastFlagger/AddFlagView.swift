@@ -15,7 +15,6 @@ func addFlagToFlags(_ flag: String, _ type: String, _ val: String) {
     let trueValue: String = String(val)
     
     flags.updateValue(trueValue, forKey: flag)
-    activeFlags.updateValue(trueValue, forKey: flag)
     print(flags)
 }
 

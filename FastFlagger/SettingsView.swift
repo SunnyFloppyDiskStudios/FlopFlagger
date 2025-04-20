@@ -21,7 +21,6 @@ struct SettingsView: View {
     var body: some View {
         let saveDataLocation = URL.documentsDirectory.appendingPathComponent("FlopFlagger", isDirectory: true)
         let flagsFileURL = saveDataLocation.appendingPathComponent("Flags.json")
-        let activeFlagsFileURL = saveDataLocation.appendingPathComponent("ActiveFlags.json")
         
         VStack {
             Image(systemName: "person.fill")
@@ -32,16 +31,19 @@ struct SettingsView: View {
             
             Text("Not intended for commercial or destructive use")
             
-            HStack {
-                Image(systemName: "network.fill")
-                    .imageScale(.large)
-                    .foregroundStyle(.tint)
-                Button("Discord Support & Updates") {
-                    @Environment(\.openURL) var openURL
-                    
-                    if let url = URL(string: "https://discord.com/invite/XQ3wJh3tXw") {
-                        openURL(url)
-                    }
+            Button("FastFlag Help") {
+                @Environment(\.openURL) var openURL
+                
+                if let url = URL(string: "https://discord.com/invite/XQ3wJh3tXw") {
+                    openURL(url)
+                }
+            }
+            
+            Button("Software Support") {
+                @Environment(\.openURL) var openURL
+                
+                if let url = URL(string: "https://discord.gg/SGGnUUjf7P") {
+                    openURL(url)
                 }
             }
             
@@ -57,30 +59,21 @@ struct SettingsView: View {
                 importJSONToFlags()
             }
             
-            Button("Disable App Flags") {
-                activeFlags.removeAll()
-            }.buttonStyle(.borderedProminent).tint(.teal)
-            
-            Button("Remove Client Flags") {
+            Button("Unload Client Flags") {
                 let fileManager = FileManager.default
                 if fileManager.fileExists(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json") {
                     try! fileManager.removeItem(atPath: "/Applications/Roblox.app/Contents/MacOS/ClientSettings/ClientAppSettings.json")
                 }
             }.buttonStyle(.borderedProminent).tint(.purple)
             
-            Button("Clear App Flags") {
+            Button("Reset ContentView") {
                 flags.removeAll()
-                activeFlags.removeAll()
                 reloadContentViewOnly()
                 
                 let fileManager = FileManager.default
                 
                 if fileManager.fileExists(atPath: flagsFileURL.path()) {
                     try! fileManager.removeItem(at: flagsFileURL)
-                }
-                
-                if fileManager.fileExists(atPath: activeFlagsFileURL.path()) {
-                    try! fileManager.removeItem(at: activeFlagsFileURL)
                 }
             }.buttonStyle(.borderedProminent).tint(.red)
             

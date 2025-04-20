@@ -132,19 +132,6 @@ func deleteFlag(_ flag: String) {
     reloadContentViewOnly()
 }
 
-func flagStatusControl(_ flag: String) {
-    if activeFlags[flag] != nil {
-        activeFlags.removeValue(forKey: flag)
-    } else {
-        if flags[flag].customMirror.subjectType == String.self {
-            activeFlags.updateValue(flags[flag] ?? "ERR_CORRUPT_VAL", forKey: flag)
-        }
-    }
-    
-    reloadContentViewOnly()
-    
-}
-
 func getFlagValue(_ flag: String) -> Any {
     return flags[flag]! as Any
 }
@@ -178,8 +165,6 @@ struct FlagItem: Identifiable {
 struct ContentView: View {
     @Environment(\.openWindow) var openWindow
     
-    @State var isActiveToggleOn: Bool = false
-    
     @State var search: String = ""
     
     var body: some View {
@@ -210,7 +195,7 @@ struct ContentView: View {
                         .padding()
                     Button("Apply & Open Client") {
                         
-                        let dictionary: [String:String] = activeFlags
+                        let dictionary: [String:String] = flags
                         let conData = convertJSONStringToJSONData(dictionary)
                         
                         saveUserData()
@@ -271,7 +256,6 @@ struct ContentView: View {
                     Text(item.flag)
                         .foregroundStyle(
                             searchedFlags.index(forKey: item.flag) != nil ? .yellow :
-                            activeFlags.index(forKey: item.flag) == nil ? .blue :
                             .primary
                         )
                 }
@@ -288,9 +272,9 @@ struct ContentView: View {
             
             HStack {
                 Button("Delete") {
-                    
+                    deleteFlag("")
                 }
-                .tint(.red)
+                .buttonStyle(.borderedProminent).tint(.red)
                 
                 Image(systemName: "magnifyingglass")
                     .imageScale(.large)
