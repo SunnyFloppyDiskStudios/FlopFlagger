@@ -79,7 +79,6 @@ struct AddFlagView: View {
                     reloadContentView()
                 }
             }
-            Spacer()
         }
     }
 }
