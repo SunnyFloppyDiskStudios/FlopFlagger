@@ -214,7 +214,6 @@ struct ContentView: View {
                 }.padding()
             }
             
-            Divider()
             Spacer()
             
             /// **CONTENT**
