@@ -1,11 +1,7 @@
 # FlopFlagger
 ### The neatest little Roblox FastFlag manager for macOS!
-Built from the ground up, with SwiftUI, for simplicity and ease of use.
 
-Manage client flags with ease, using clear GUI and without hiding anything.
+**WARNING:** Abusing FastFlags in games to get an unfair advantage is VERY BAD and will GET YOU BANNED! DO THIS AT YOUR OWN RISK.
+**DISCLAIMER:** Roblox is slowly phasing out fastflags. It is highly likely that in the coming months FlopFlagger will become useless. Additionally, because im realllly bad at futureproofing, the code contains like no comments whatsoever and the codebase is a mess to work on. So, unlikely that I would even update it if Roblox decided not to phase out FastFlags.
 
-Save your favourite presets, so you can always access features when you need them.
-
-Share presets with others, so they can also experience beta features for themselves.
-
-Join the [Sunny Floppy Disk Studios](https://discord.gg/SGGnUUjf7P) community server to discuss FlopFlagger, as well as upcoming projects!
+Built with SwiftUI. Manage client flags with ease, easy to use GUI. Save your favourite presets and even share them.
