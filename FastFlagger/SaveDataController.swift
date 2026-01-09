@@ -4,6 +4,7 @@
 //
 //  Created by SunnyFlops on 16/09/2024.
 //
+//  Manage saving the main non-preset flags
 
 import SwiftUI
 import Foundation

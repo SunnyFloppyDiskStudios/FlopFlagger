@@ -4,6 +4,7 @@
 //
 //  Created by SunnyFlops on 07/09/2024.
 //
+//  Main view for managing fastflags
 
 import SwiftUI
 import Foundation
@@ -14,7 +15,21 @@ import UniformTypeIdentifiers
 let workspace = NSWorkspace.shared
 let applications = workspace.runningApplications
 
+// MARK: - GENERAL FUNCTIONS
+func reloadContentViewOnly() {
+    // a hacky workaround to not having a @observable list
+    
+    @Environment(\.openWindow) var openWindow
+    @Environment(\.dismissWindow) var dismissWindow
+    
+    dismissWindow(id: "content")
+    openWindow(id: "content")
+}
+
+// MARK: - JSON and FILE IO
 func convertJSONStringToJSONData(_ jsonEncodeTo: [String:String]) -> Data? {
+    // convert save file to something usable
+    
     do {
         let jse = JSONEncoder()
         jse.outputFormatting = .prettyPrinted
@@ -25,6 +40,8 @@ func convertJSONStringToJSONData(_ jsonEncodeTo: [String:String]) -> Data? {
 }
 
 func createFile(_ atPath: String, _ contents: Data?, _ urlAsURL: URL, _ attributes: [FileAttributeKey : Any]? = nil) -> Bool {
+    // method for creating autosave file
+    
     print(atPath)
     print(contents ?? "no bytes found in contents")
     print(attributes ?? "no attributes")
@@ -57,6 +74,8 @@ func createFile(_ atPath: String, _ contents: Data?, _ urlAsURL: URL, _ attribut
 }
 
 func saveJSON(_ jsonData: Data) {
+    // save current selection of flags to disk\
+    
     let dialog = NSOpenPanel();
     
     dialog.title = "Save your FFlag";
@@ -84,6 +103,9 @@ func saveJSON(_ jsonData: Data) {
 }
 
 func applyJSON(_ jsonData: Data) {
+    // write JSON to client flags location inside the Roblox app.
+    // hasn't required full disk access *yet* but it's a possibility and maybe why Studio doesn't work yet.
+    
     let fileManager = FileManager.default
     let umpobcb = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
     umpobcb[0] = true
@@ -101,14 +123,7 @@ func applyJSON(_ jsonData: Data) {
     }
 }
 
-func reloadContentViewOnly() {
-    @Environment(\.openWindow) var openWindow
-    @Environment(\.dismissWindow) var dismissWindow
-    
-    dismissWindow(id: "content")
-    openWindow(id: "content")
-}
-
+// MARK: - FLAG MANAGEMENT
 func deleteFlags(_ flagsToDelete: Set<String>) {
     for key in flagsToDelete {
         flags.removeValue(forKey: key)
@@ -139,13 +154,13 @@ func searchFlags(_ userInput: String) {
     reloadContentViewOnly()
 }
 
-
 struct FlagItem: Identifiable {
     var id: String { flag }
     let flag: String
     let value: String
 }
 
+// MARK: - UI
 struct ContentView: View {
     @Environment(\.openWindow) var openWindow
     
@@ -156,6 +171,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             HStack {
+                // "toolbar" buttons
                 HStack {
                     Image(systemName: "flag.badge.ellipsis.fill")
                         .imageScale(.large)
@@ -216,7 +232,7 @@ struct ContentView: View {
             
             Spacer()
             
-            /// **CONTENT**
+            // Content
             var flagItems: [FlagItem] {
                 flags.keys.map { key in
                     FlagItem(flag: key, value: getFlagValueAsString(key) as? String ?? "")
@@ -238,10 +254,9 @@ struct ContentView: View {
             }
             .tableStyle(.inset)
 
-
-            
             Spacer()
             
+            // bottom "toolbar" elements
             HStack {
                 Button("Delete") {
                     deleteFlags(selectedFlagIDs)
@@ -262,7 +277,7 @@ struct ContentView: View {
                 }.textFieldStyle(.roundedBorder)
             }.padding()
             
-            
+        // Data mangement
         }.onAppear() {
             Task {
                 await loadContent()

@@ -4,13 +4,17 @@
 //
 //  Created by SunnyFlops on 08/09/2024.
 //
+//  UI for adding flags to the user's flags
 
 import SwiftUI
 import Combine
 import Foundation
 import ExtensionKit
 
+// MARK: - FUNCTIONS
 func addFlagToFlags(_ flag: String, _ type: String, _ val: String) {
+    // self explanatory
+    
     let trueValue: String = String(val)
     
     flags.updateValue(trueValue, forKey: flag)
@@ -18,6 +22,8 @@ func addFlagToFlags(_ flag: String, _ type: String, _ val: String) {
 }
 
 func reloadContentView() {
+    // similar function exists in the ContentView
+    
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissWindow) var dismissWindow
     
@@ -27,6 +33,7 @@ func reloadContentView() {
     openWindow(id: "addflag")
 }
 
+// MARK: - UI
 struct AddFlagView: View {
     @State var flagEntered: String = ""
     @State var valueEntered: String = ""
@@ -66,10 +73,12 @@ struct AddFlagView: View {
                     Text("Invalid Flag Component")
                 }
                 
+                // fastflags have different types which can be easily identified. this prevents improper values (however nothing bad would happen anyway)
+                // is this efficient? probably not. are there edge cases? maybe.
                 if flagEntered.contains("String") || flagEntered.contains("Flag") || flagEntered.contains("Int") {
                     Button("OK") {
                         if valueEntered.isEmpty {
-                            if flagEntered.contains("Flag") {
+                            if flagEntered.contains("Flag") { // bool
                                 if isOn {
                                     valueEntered = "true"
                                 } else {

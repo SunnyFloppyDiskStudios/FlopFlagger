@@ -4,6 +4,7 @@
 //
 //  Created by SunnyFlops on 23/09/2024.
 //
+//  Imports flags from external json files (presets)
 
 import Foundation
 import ExtensionKit

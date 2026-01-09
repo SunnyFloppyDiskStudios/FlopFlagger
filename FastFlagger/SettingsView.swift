@@ -4,6 +4,7 @@
 //
 //  Created by SunnyFlops on 07/09/2024.
 //
+//  App Settings
 
 import SwiftUI
 import SwiftData

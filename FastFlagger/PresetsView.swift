@@ -4,10 +4,12 @@
 //
 //  Created by SunnyFlops on 21/09/2024.
 //
+//  View for seeing all user created flag presets
 
 import SwiftUI
 
-let presetLocation = URL.documentsDirectory.appending(path: "FlopFlagger/Presets")
+// MARK: - FUNCTIONS
+let presetLocation = URL.documentsDirectory.appending(path: "FlopFlagger/Presets") // ~/Documents/..
 let plStr = presetLocation.path()
 
 let fileManager = FileManager.default
@@ -48,6 +50,7 @@ func closePresets() {
     dismissWindow(id: "presetNaming")
 }
 
+// MARK: - UI
 struct PresetsView: View {
     var body: some View {
         VStack {

@@ -4,6 +4,7 @@
 //
 //  Created by SunnyFlops on 23/09/2024.
 //
+//  View for managing adding file presets
 
 import SwiftUI
 

@@ -4,9 +4,10 @@
 //
 //  Created by SunnyFlops on 19/09/2024.
 //
-// Mac Client - https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer ; Mac..Player
-// Mac Studio - https://clientsettingscdn.roblox.com/v2/client-version/MacStudio ; Mac..Studio
+//  Mac Client - https://clientsettingscdn.roblox.com/v2/client-version/MacPlayer ; Mac..Player
+//  Mac Studio - https://clientsettingscdn.roblox.com/v2/client-version/MacStudio ; Mac..Studio
 //
+//  Fetch some data on app startup
 
 import Foundation
 
@@ -24,6 +25,7 @@ func loadContent() async {
         print("Error fetching versions: \(error.localizedDescription)")
     }
     
+    // CVU = Client Version Upload
     let clientCVU = clientProcessed["clientVersionUpload"] ?? "ERR_NO_INTERNET"
     let studioCVU = studioProcessed["clientVersionUpload"] ?? "RESTART_APP"
     
